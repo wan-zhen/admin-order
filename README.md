@@ -1,7 +1,7 @@
 # admin-order
 
 > A Vue.js project
-
+> [DEMO](https://wan-zhen.github.io/admin-order/dist)
 ## Build Setup
 
 ``` bash
