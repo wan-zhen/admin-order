@@ -17,7 +17,8 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 
-# plugin
-> EChart
-> BS4
+# Package
+> ECharts
+> Bootstrap4
 > FontAwesome
+> Moment.js

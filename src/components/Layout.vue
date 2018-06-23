@@ -24,7 +24,25 @@
   </nav>
   <div class="bg-light">
     <div class="container pt-3">
-      <h4>OVERVIEW</h4>
+      <div class="row">
+        <h4 class="col-sm">OVERVIEW</h4>
+        <div class="col-sm text-right">
+          <span class="text-muted">{{startDay}}</span>
+          <i class="fa fa-caret-right"></i>
+          <span class="text-muted">{{endDay}}</span>
+          <div class="btn-group">
+            <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{dayName}}
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <button class="dropdown-item" type="button" @click="changeDay(7)">Weekly</button>
+              <button class="dropdown-item" type="button" @click="changeDay(31)">Monthly</button>
+              <button class="dropdown-item" type="button" @click="changeDay(364)">Yearly</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
           <div class="row mb-3">
             <div class="col-sm" v-for="item in overViews">
               <div class="card text-center">
@@ -37,6 +55,107 @@
             </div>
           </div>
           <div class="card" id="main" style="height:500px;"></div>
+          <div class="row mt-3">
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Transaction Website</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="d-flex bd-highlight">
+                        <div class="p-2 flex-fill bd-highlight">
+                          <i class="fab fa-facebook fa-2x fa-fw"></i>
+                          <span class="text-muted">Facebook.com</span>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right">
+                           <h5>{{getRandom() | thousandComma}}</h5>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right text-success">
+                           <i class="fa fa-arrow-up"></i>
+                           {{getRandomPercent()}}%
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="list-group-item">
+                      <div class="d-flex bd-highlight">
+                        <div class="p-2 flex-fill bd-highlight">
+                          <i class="fab fa-google fa-2x fa-fw"></i>
+                          <span class="text-muted">google.com</span>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right">
+                           <h5>{{getRandom() | thousandComma}}</h5>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right text-success">
+                           <i class="fa fa-arrow-up"></i>
+                           {{getRandomPercent()}}%
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="list-group-item">
+                      <div class="d-flex bd-highlight">
+                        <div class="p-2 flex-fill bd-highlight">
+                          <i class="fa fa-shopping-bag fa-2x fa-fw"></i>
+                          <span class="text-muted">Shopify.com</span>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right">
+                           <h5>{{getRandom() | thousandComma}}</h5>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right text-danger">
+                           <i class="fa fa-arrow-down"></i>
+                           {{getRandomPercent()}}%
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="list-group-item">
+                      <div class="d-flex bd-highlight">
+                        <div class="p-2 flex-fill bd-highlight">
+                          <i class="fab fa-wordpress fa-2x fa-fw"></i>
+                          <span class="text-muted">Wordpress.com</span>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right">
+                           <h5>{{getRandom() | thousandComma}}</h5>
+                        </div>
+                        <div class="p-2 flex-fill bd-highlight text-right text-danger">
+                           <i class="fa fa-arrow-down"></i>
+                           {{getRandomPercent()}}%
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+             <div class="col-sm">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Letest Orders</h5>
+                   <ul class="list-group list-group-flush">
+                    <li class="list-group-item" v-for="item in letestOrder">
+
+                      <div class="d-flex">
+                        <div class="p-2">
+                          <img :src="getImgUrl(item.img)" style="width:100px" class="rounded">
+                        </div>
+                        <div class="p-2  flex-grow-1">
+                          <h6>{{item.title}}</h6>
+                          <div class="text-muted"><i class="fa fa-clock fa-fw"></i> {{item.time}}</div>
+                          <div class="text-muted"><i class="fa fa-male fa-fw"></i> {{item.owner}}</div>
+                        </div>
+                        <div class="p-2 text-right align-self-end">
+                          total
+                          <h5>{{item.total | thousandComma}}</h5>
+                        </div>
+                      </div>
+                    </li>
+                   </ul>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
   </div>
 </div>
@@ -47,31 +166,138 @@ export default {
   name: "Layout",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
       overViews: [
         {
           title: "total revenue",
-          count: 54540,
+          count: revenueSum,
           icon: "hand-holding-usd",
           color: "success"
         },
-        { title: "total cost", count: 12660, icon: "boxes", color: "danger" },
+        { title: "total cost", count: costSum, icon: "boxes", color: "danger" },
         {
           title: "net income",
-          count: 41880,
+          count: incomeSum,
           icon: "money-bill",
           color: "primary"
         }
-      ]
+      ],
+      letestOrder: [
+        {
+          img: "01.jpg",
+          title: "Vintage T-shirt",
+          time: "2018/6/13 13:42",
+          owner: "Belle Willis",
+          total: 3200
+        },
+        {
+          img: "02.jpg",
+          title: "Cowboy Jacket",
+          time: "2018/6/13 10:22",
+          owner: "Adrian Cummings",
+          total: 2800
+        },
+        {
+          img: "03.jpg",
+          title: "Coach Coat",
+          time: "2018/6/13 8:12",
+          owner: "Lura Holland",
+          total: 1600
+        }
+      ],
+      startDay: startDay,
+      endDay: endDay,
+      dayName: "Weekly"
     };
+  },
+  methods: {
+    getImgUrl(img) {
+      return require("../assets/" + img);
+    },
+    getRandom() {
+      return Math.floor(Math.random() * 30000 + 3000);
+    },
+    getRandomPercent() {
+      return Math.floor(Math.random() * 99 + 1);
+    },
+    changeDay(days) {
+      getDay(days);
+      drawEchart();
+      this.startDay = startDay;
+      this.endDay = endDay;
+      switch (days) {
+        case 7:
+          this.dayName = "Weekly";
+          break;
+        case 31:
+          this.dayName = "Monthly";
+          break;
+        case 364:
+          this.dayName = "Yearly";
+          break;
+        default:
+          break;
+      }
+      this.overViews[0].count = revenueSum;
+      this.overViews[1].count = costSum;
+      this.overViews[2].count = incomeSum;
+    }
   }
 };
+
 var echarts = require("echarts");
 
-// 基于准备好的dom，初始化echarts实例
-$(function() {
-  var myChart = echarts.init(document.getElementById("main"));
+var moment = require("moment");
 
+var records = [];
+
+for (var i = 0; i < 365; i++) {
+  records.push({
+    date: moment()
+      .subtract(i, "days")
+      .format("YYYY/MM/DD"),
+    revenue: Math.floor(Math.random() * 666 + 1),
+    cost: Math.floor(Math.random() * 666 + 1),
+    income: Math.floor(Math.random() * 666 + 1)
+  });
+}
+
+var chartDay = [];
+var chartRevenue = [];
+var chartCost = [];
+var chartIncome = [];
+var startDay = "";
+var endDay = "";
+var revenueSum = 0;
+var costSum = 0;
+var incomeSum = 0;
+function getDay(days) {
+  chartDay = [];
+  chartRevenue = [];
+  chartCost = [];
+  chartIncome = [];
+  for (var i = 0; i < days; i++) {
+    chartDay.push(records[days - i].date);
+    chartRevenue.push(records[days - i].revenue);
+    chartCost.push(records[days - i].cost);
+    chartIncome.push(records[days - i].income);
+  }
+  startDay = chartDay[0];
+  endDay = chartDay[chartDay.length - 1];
+  revenueSum = chartRevenue.reduce(
+    (accumulator, currentValue) => accumulator + currentValue
+  );
+  costSum = chartCost.reduce(
+    (accumulator, currentValue) => accumulator + currentValue
+  );
+  incomeSum = chartIncome.reduce(
+    (accumulator, currentValue) => accumulator + currentValue
+  );
+}
+
+getDay(7);
+
+function drawEchart() {
+  var myChart = echarts.init(document.getElementById("main"));
   // 绘制图表
   myChart.setOption({
     title: {
@@ -94,7 +320,7 @@ $(function() {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+      data: chartDay
     },
     yAxis: {
       type: "value"
@@ -103,20 +329,23 @@ $(function() {
       {
         name: "Total revenue",
         type: "line",
-        data: [120, 132, 101, 134, 90, 230, 210]
+        data: chartRevenue
       },
       {
         name: "Total cost",
         type: "line",
-        data: [220, 182, 50, 500, 290, 330, 310]
+        data: chartCost
       },
       {
         name: "Net income",
         type: "line",
-        data: [150, 232, 0, 154, 190, 330, 410]
+        data: chartIncome
       }
     ]
   });
+}
+$(function() {
+  drawEchart();
 });
 </script>
 
